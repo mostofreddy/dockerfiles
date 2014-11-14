@@ -19,6 +19,14 @@ RUN \
 # Add apps
 RUN \
     yum groupinstall -y 'Development Tools' && \
-    yum install -y vim wget unzip man htop ssh
+    yum install -y vim wget unzip man htop ssh git subversion tar
+
+RUN \
+    yum -y install python-setuptools && \
+    easy_install supervisor && \
+    mkdir -p /var/log/supervisor
+
+RUN \
+    yum -y install which
 
 ##################### INSTALLATION END #####################
