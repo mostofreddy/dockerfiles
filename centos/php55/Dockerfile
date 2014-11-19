@@ -4,7 +4,7 @@
 ############################################################
 
 # Set the base image
-FROM            freddy/centos:base
+FROM            mostofreddy/centos:apache
 
 # File Author / Maintainer
 MAINTAINER      Federico Lozada Mosto <mosto.federico@gmail.com>
@@ -14,14 +14,12 @@ MAINTAINER      Federico Lozada Mosto <mosto.federico@gmail.com>
 # Add apps
 
 RUN \
-    yum install -y httpd httpd-devel
-
-RUN cd /root
-RUN yum install -y libxml2-devel openssl-devel libcurl-devel libjpeg-devel libpng-devel freetype-devel readline-devel net-snmp net-snmp-devel libxslt-devel
-RUN wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm
-RUN rpm -i rpmforge-release-0.5.3-1.el6.rf.*.rpm
-RUN yum install -y libmcrypt-devel
-RUN rm rpmforge-release-0.5.3-1.el6.rf.*.rpm
+    cd /root && \
+    yum install -y libxml2-devel openssl-devel libcurl-devel libjpeg-devel libpng-devel freetype-devel readline-devel net-snmp net-snmp-devel libxslt-devel  && \
+    wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm  && \
+    rpm -i rpmforge-release-0.5.3-1.el6.rf.*.rpm  && \
+    yum install -y libmcrypt-devel  && \
+    rm rpmforge-release-0.5.3-1.el6.rf.*.rpm
 
 RUN \
     cd /root && \
@@ -94,14 +92,6 @@ RUN \
     make clean && \
     make && \
     make install && \
-    cp php.ini-development /usr/local/php/php_5.5.18/lib/php.ini && \
-    cd .. && \
-    rm php-5.5.18 -Rf && \
-    rm php-5.5.18.tar.gz
-
-ADD supervisord.conf /etc/supervisord.conf
+    cp php.ini-development /usr/local/php/php_5.5.18/lib/php.ini
 
 ##################### INSTALLATION END #####################
-
-EXPOSE 22 80
-CMD ["/usr/bin/supervisord"]
